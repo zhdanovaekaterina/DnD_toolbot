@@ -1,2 +1,6 @@
 venv
 .idea
+.env
+*.log
+debugging
+src/logs
