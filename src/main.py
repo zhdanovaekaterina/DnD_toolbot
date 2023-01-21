@@ -15,21 +15,7 @@ logger = logging.getLogger(__name__)
 async def main():
 
     # Enable logging
-    handler = TimedRotatingFileHandler(c.LOG_FILENAME, when='d', interval=1,
-                                       backupCount=7, encoding=None,
-                                       delay=False, utc=False, atTime=None)
-
-    console_handler = logging.StreamHandler()
-
-    logging.basicConfig(
-        level=c.log_level,
-        force=True,
-        format=c.LOG_FORMAT,
-        datefmt=c.LOG_DATEFMT,
-        handlers=[
-            handler,
-            console_handler],
-    )
+    c.enable_logging()
 
     # Configure bot
     bot = Bot(token=c.token)
