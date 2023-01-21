@@ -11,7 +11,7 @@ class Condition(metaclass=ABCMeta):
 class AliveCreature(Condition):
 
     def __init__(self, hp: int):
-        self.current_hp = hp
+        self.hp = hp
 
     def __repr__(self):
         return f'Alive, current hp: {self.hp}'

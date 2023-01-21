@@ -11,13 +11,33 @@ c.enable_logging()
 
 def test_1():
     """
-    Проверяет создание существ. Каждый tescase проверяется для игрока и для монстра отдельно.
+    Проверяет создание существ и поведение счетчика живых существ. Каждый tescase проверяется для игрока и для монстра отдельно.
     Testcase 1: Создание существа;
     Testcase 2: Попытка создания без переданного имени;
     Testcase 3: Попытка создания без переданного кол-ва хп / класса брони / инициативы;
     Testcase 4: Попытка создания с нулевым или отрицательным кол-вом хп / классом брони / инициативой;
+    Testcase 5: Проверка поведения счетчика живых существ при создании нового существа и связывании с существующим именем;
     """
-    pass
+
+    # Проверяем что счетчик не отрабатывает при создании персонажа
+    player1 = Player(name='Karlin', hp=20, armour_class=17)
+    assert Player.alive_members == 0
+
+    # Проверяем что счетчик отрабатывает при смене состояния
+    player1.change_condition(AliveCreature(10))
+    assert Player.alive_members == 1
+
+    # Проверяем что счетчик не отрабатывает при повторном присваивании одной и той же переменной
+
+    # # player3 = Player(name='Miriel', hp=22, armour_class=18, initiative=18)
+    # monster1 = Monster(name='Werwolf', hp=22, armour_class=18, initiative=18)
+    # monster2 = Monster(name='Werwolf', hp=22, armour_class=18, initiative=18)
+    #
+    # print(Player.alive_members)
+    # print(Monster.alive_members)
+    #
+    # player1 = Player(name='Karlin', hp=20, armour_class=17, initiative=20)
+    # print(player1)
 
 
 def test_2():
@@ -26,7 +46,27 @@ def test_2():
     Testcase 1: Добавление 1 игрока;
     Testcase 2: Добавление нескольких игроков;
     """
-    pass
+    battle = Battle()
+
+    player1 = Player(name='Karlin', hp=20, armour_class=17)
+    player2 = Player(name='Petr', hp=25, armour_class=18)
+
+    battle.add(player1, 10, add_hp=10)
+    battle.add(player2, 15)
+
+    # # Проверяем добавление временных хитов перед началом боя
+    # assert battle.members[0].hp == 30
+    # assert battle.members[1].hp == 25
+    #
+    # battle.start()
+    #
+    # # Проверяем что участники отсортированы по убыванию инициативы
+    # iterator = iter(battle.members.members[1:])
+    # for active in battle.members[:-1]:
+    #     next_active = next(iterator)
+    #     assert active.initiative > next_active.initiative
+    #
+    # # Проверяем что при совпадении инициатив запрашивается порядок у клиента
 
 
 def test_3():

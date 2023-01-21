@@ -18,7 +18,7 @@ password = os.getenv('PASSWORD')
 
 # Logging settings
 log_level = logging.DEBUG
-LOG_FILENAME = 'logs/logs.log'
+LOG_FILENAME = '../logs/logs.log'
 LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 LOG_DATEFMT = '%Y-%m-%d %H:%M:%S'
 

@@ -1,9 +1,10 @@
+import sys
 import logging
 from queue import Queue
 from abc import ABC, abstractmethod
 from typing import Type
 
-from conditions import Condition, InactiveCreature, AliveCreature, DeadCreature
+from src.components.conditions import Condition, InactiveCreature, AliveCreature, DeadCreature
 
 logger = logging.getLogger(__name__)
 
@@ -23,12 +24,12 @@ class Creature(ABC):
         self.initiative = 0
 
     def __repr__(self):
-        return f'type: {type(self)}\n' \
-               f'name: {self.name}\n' \
-               f'condition: {self.condition}\n' \
-               f'start_hp: {self.start_hp}\n' \
-               f'armour_class: {self.armour_class}\n' \
-               f'initiative: {self.initiative}\n\n'
+        return f'type: {type(self)}, ' \
+               f'name: {self.name}, ' \
+               f'condition: {self.condition}, ' \
+               f'start_hp: {self.start_hp}, ' \
+               f'armour_class: {self.armour_class}, ' \
+               f'initiative: {self.initiative}'
 
     @staticmethod
     def _add_alive(cls):
@@ -39,7 +40,12 @@ class Creature(ABC):
         cls.alive_members -= 1
 
     def change_condition(self, new_condition):
-        if isinstance(new_condition, AliveCreature):
+
+        if type(self.condition) == type(new_condition):
+            logging.warning(f'Creature already have condition {new_condition}')
+            return
+
+        elif isinstance(new_condition, AliveCreature):
             if not isinstance(self.condition, AliveCreature):
                 self._add_alive(self.__class__)
 
@@ -49,6 +55,9 @@ class Creature(ABC):
 
         else:
             logging.error(f'Unknown condition {new_condition}')
+            sys.exit(1)
+
+        self.condition = new_condition
 
     def set_initiative(self, initiative):
         self.initiative = initiative
