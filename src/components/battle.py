@@ -3,37 +3,10 @@ from queue import Queue
 from typing import List, Type
 
 from src.components.conditions import AliveCreature
+from src.components.members import MembersTeam
+from src.components.creatures import Creature
 
 logger = logging.getLogger(__name__)
-
-
-class Members:
-
-    def __init__(self):
-        self.members = []
-        self.iterator = iter(self.members)
-
-    def __iter__(self):
-        return self.iterator
-
-    def __next__(self):
-        try:
-            return next(self.iterator)
-        except StopIteration:
-            self.iterator = iter(self.members)
-            return next(self.iterator)
-
-    def __repr__(self):
-        return ', '.join([str(obj) for obj in self.members])
-
-    def clear(self):
-        self.members = []
-
-    def add(self, obj):
-        self.members.append(obj)
-
-    def sort(self):
-        self.members.sort(key=lambda x: x.initiative, reverse=True)
 
 
 class Battle:
@@ -46,10 +19,13 @@ class Battle:
         return cls.instance
 
     def __init__(self):
-        self.members = Members()
+        self.members = MembersTeam()
+        self.player_team = self.members.player_team
+        self.monster_team = self.members.monster_team
+
         self.active_member = None
 
-    def add(self, creature, initiative, add_hp=0):
+    def add(self, creature: Creature, initiative, add_hp=0):
 
         hp = creature.start_hp + add_hp
         creature.change_condition(AliveCreature(hp))
@@ -67,6 +43,6 @@ class Battle:
             count += 1
 
     def finish(self):
-        self.members = Members()
+        self.members = MembersTeam()
         self.active_member = None
         print('Battle finished!')

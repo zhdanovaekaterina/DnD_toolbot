@@ -1,17 +1,34 @@
 import logging
-from abc import ABCMeta
+from abc import ABC, abstractmethod
 
 logger = logging.getLogger(__name__)
 
 
-class Condition(metaclass=ABCMeta):
-    pass
+class Condition(ABC):
+
+    @abstractmethod
+    def __init__(self):
+        pass
+
+    @abstractmethod
+    def __bool__(self):
+        """
+        Возвращает флаг, считается ли экземпляр данного класса живым (т.е. продолжает ли участие в бою).
+        """
+        pass
+
+    @classmethod
+    def get_classname(cls):
+        return cls.__name__
 
 
 class AliveCreature(Condition):
 
     def __init__(self, hp: int):
         self.hp = hp
+
+    def __bool__(self):
+        return True
 
     def __repr__(self):
         return f'Alive, current hp: {self.hp}'
@@ -29,6 +46,9 @@ class NotStableCreature(Condition):
         self.success_throws = 0
         self.fail_throws = 0
 
+    def __bool__(self):
+        return True
+
     def __repr__(self):
         return 'Dead'
 
@@ -41,17 +61,35 @@ class NotStableCreature(Condition):
 
 class StableCreature(Condition):
 
+    def __init__(self):
+        pass
+
+    def __bool__(self):
+        return True
+
     def __repr__(self):
         return 'Stable'
 
 
 class DeadCreature(Condition):
 
+    def __init__(self):
+        pass
+
+    def __bool__(self):
+        return False
+
     def __repr__(self):
         return 'Not stable'
 
 
 class InactiveCreature(Condition):
+
+    def __init__(self):
+        pass
+
+    def __bool__(self):
+        return False
 
     def __repr__(self):
         return 'Inactive'
